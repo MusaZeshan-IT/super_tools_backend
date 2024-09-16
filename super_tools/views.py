@@ -29,7 +29,7 @@ class SummarizeTextView(APIView):
             # Call OpenAI to summarize the text
             response = openai.Completion.create(
                 engine="text-davinci-003",
-                prompt=f"Summarize the following text: {text}",
+                prompt=f"Summarize the following text in a way that is easy to understand, engaging, and professional. The summary should be clear and compelling, as if written by the best content writer, and suitable for readers of all ages, including non-native English speakers or a 10-year-old child. The tone should feel natural, like a knowledgeable and friendly teacher explaining the topic. Summarize the following text: {text}",
                 max_tokens=150,
                 temperature=0.7,
             )
