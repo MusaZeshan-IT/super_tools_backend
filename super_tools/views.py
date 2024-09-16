@@ -4,16 +4,16 @@ The views for the super_tools app
 
 import os
 import openai
-from rest_framework import status
+import status
+from django.conf import settings
+from rest_framework
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # Create your views here.
 
 # Set your OpenAI API key (best practice is to use environment variables)
-openai.api_key = os.getenv(
-    "OPENAI_API_KEY"
-)  # Use an environment variable to store API key
+openai.api_key = settings.OPENAI_API_KEY
 
 
 class SummarizeTextView(APIView):
