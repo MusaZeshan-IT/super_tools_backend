@@ -3,8 +3,8 @@ The views for the super_tools app
 """
 
 import openai
-import status
 from django.conf import settings
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
