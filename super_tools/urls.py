@@ -6,5 +6,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("summarize/", views.SummarizeTextView.as_view(), name="summarize-text"),
+    path("ai-text-summarizer/", views.SummarizeTextView.as_view(), name="ai-text-summarizer"),
 ]
