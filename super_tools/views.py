@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 openai.api_key = settings.OPENAI_API_KEY
 
 
-class SummarizeTextView(APIView):
+class AiTextSummarizerView(APIView):
     """Function for summarizing text"""
 
     def post(self, request):
