@@ -15,7 +15,7 @@ openai.api_key = settings.OPENAI_API_KEY
 
 
 class AiTextSummarizerView(APIView):
-    """Function for summarizing text"""
+    """A function for summarizing text using OpenAI"""
 
     def post(self, request):
         """The post method for summarizing text"""
