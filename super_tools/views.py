@@ -2,40 +2,56 @@
 The views for the super_tools app
 """
 
-import openai
-from django.conf import settings
-from rest_framework import status
-from rest_framework.response import Response
+import os
+import cohere
+from dotenv import load_dotenv
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-# Create your views here.
+# Loading the environment variables
+load_dotenv()
 
-# Set your OpenAI API key (best practice is to use environment variables)
-openai.api_key = settings.OPENAI_API_KEY
+# Cohere API key from settings
+cohere_api_key = os.getenv("COHERE_API_KEY")
+
+# Initialize the Cohere client
+co = cohere.Client(cohere_api_key)
 
 
-class AiTextSummarizerView(APIView):
-    """A function for summarizing text using OpenAI"""
+class WritingToolsAPIView(APIView):
+    """A class-based view for handling AI generation tasks via Cohere API."""
 
-    def post(self, request):
-        """The post method for summarizing text"""
+    def post(self, request, *args, **kwargs):
+        """The post method for the Cohere API"""
 
-        try:
-            # Get the text from the request
-            text = request.data.get("text", "")
+        # Extract task and input text from the request body
+        text = request.data.get("text")
+        task = request.data.get("task")
 
-            # Call OpenAI to summarize the text
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Summarize the following text in a way that is easy to understand, engaging, and professional. The summary should be clear and compelling, as if written by the best content writer, and suitable for readers of all ages, including non-native English speakers or a 10-year-old child. The tone should feel natural, like a knowledgeable and friendly teacher explaining the topic. Summarize the following text: {text}",
-                max_tokens=150,
-                temperature=0.7,
+        model = "command-xlarge-20210901"
+
+        if not text:
+            return Response(
+                {"error": "Text field is required"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-            # Extract the summary from the response
-            summary = response.choices[0].text.strip()
+        prompt = (
+            f"Perform the following task: {task}. On this provided input text: {text}"
+        )
 
-            return Response({"summary": summary}, status=status.HTTP_200_OK)
+        try:
+            # Make the API request to Cohere
+            response = co.generate(
+                model=model,
+                prompt=prompt,
+                max_tokens=1000,
+                temperature=0.7,  # Adjust as needed
+            )
+
+            generated_text = response.generations[0].text.strip()
+
+            return Response({"output": generated_text}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
