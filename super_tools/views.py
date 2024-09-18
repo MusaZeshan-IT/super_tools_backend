@@ -29,6 +29,7 @@ class WritingToolsAPIView(APIView):
         text = request.data.get("text")
         task = request.data.get("task")
 
+        # Set the model
         model = "command-xlarge-20210901"
 
         if not text:
