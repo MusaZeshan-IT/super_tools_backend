@@ -30,15 +30,21 @@ class WritingToolsAPIView(APIView):
         task = request.data.get("task")
 
         # Set the model
-        model = "command-xlarge-20210901"
+        model = "command-xlarge"
 
         if not text:
             return Response(
                 {"error": "Text field is required"}, status=status.HTTP_400_BAD_REQUEST
             )
 
+        # Construct the prompt with specific task instructions
         prompt = (
-            f"Perform the following task: {task}. On this provided input text: {text}"
+            f"Perform the following task exactly as described: {task}. "
+            f"Given the text: {text}, do not deviate from this task. "
+            f"Your response should strictly be a direct result of the task without any extra content. "
+            f"Do not generate any additional content, comments, follow-ups, or introductory phrases. "
+            f"If you include anything beyond the requested result, it will not meet the required specifications."
+            f"Strictly adhere to these instructions and avoid any deviations."
         )
 
         try:
@@ -46,8 +52,8 @@ class WritingToolsAPIView(APIView):
             response = co.generate(
                 model=model,
                 prompt=prompt,
-                max_tokens=1000,
-                temperature=0.7,  # Adjust as needed
+                max_tokens=700,
+                temperature=0.3,  # Adjusted temperature for stricter adherence
             )
 
             generated_text = response.generations[0].text.strip()
