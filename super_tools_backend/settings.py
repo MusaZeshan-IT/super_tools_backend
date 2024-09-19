@@ -14,7 +14,7 @@ SECRET_KEY = "django-insecure-r2u&yt$gc4@=b=h0thcvpgrq#(cl)+%7_kg+*1mxw#nla2-+x0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "supertoolsbackend-production.up.railway.app/",
+    "supertoolsbackend-production.up.railway.app",
     "localhost",
     "127.0.0.1",
 ]
